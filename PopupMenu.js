@@ -7,8 +7,8 @@
 *
 *   @param menuNode
 *       The DOM element node that serves as the popup menu container. Each
-*       child or ancestor element of menuNode that represents some type of
-*       menuitem must have its role attribute set to 'menuitem'.
+*       child element of menuNode that represents a menuitem must have a
+*       'role' attribute with value 'menuitem'.
 *
 *   @param selectorObject
 *       The selector object associated with this popup menu. Examples include:
