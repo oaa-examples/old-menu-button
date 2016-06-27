@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>ARIA Menu Button Example: Button Element</title>
   <link href="example.css" rel="stylesheet">
-  <script src="Menu.js"></script>
+  <script src="PopupMenu.js"></script>
   <script src="MenuButton.js"></script>
 </head>
 <body>
@@ -24,6 +24,7 @@
     </p>
     <ul id="menu1"
       role="menu"
+      aria-expanded="false"
       aria-labelledby="mb1">
       <li role="menuitem" onclick="updateLastAction(event)">
         Action 1
