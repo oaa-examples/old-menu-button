@@ -6,17 +6,18 @@
 *       of an HTML button or custom button-like component that, in turn
 *       controls a menu component.
 *
-*   @param buttonNode
-*       The DOM element that serves as the menubutton control.
+*   @param domNode
+*       The DOM element for which this object serves as a delegate, via
+*       its properties and event handlers.
 */
-var MenuButton = function (buttonNode) {
+var MenuButton = function (domNode) {
 
-  // Check whether buttonNode is a DOM element
-  if (!buttonNode instanceof Element) {
-    throw new TypeError("MenuButton constructor argument 'buttonNode' is not a DOM Element.");
+  // Check whether domNode is a DOM element
+  if (!domNode instanceof Element) {
+    throw new TypeError("MenuButton constructor argument 'domNode' is not a DOM Element.");
   }
 
-  this.buttonNode = buttonNode;
+  this.domNode = domNode;
   this.menuNode = null;
 
   this.keyCode = Object.freeze({
@@ -33,17 +34,17 @@ var MenuButton = function (buttonNode) {
 *
 *   @desc
 *       Find and store the menuNode associated with button via its
-*       aria-controls attribute; instantiate and initialize the Menu
+*       aria-controls attribute; instantiate and initialize the PopupMenu
 *       object associated with the menuNode; add event listeners.
 */
 MenuButton.prototype.init = function () {
   var id, that = this;
 
-  id = this.buttonNode.getAttribute('aria-controls');
+  id = this.domNode.getAttribute('aria-controls');
   if (id) {
     this.menuNode = document.getElementById(id);
     if (this.menuNode) {
-      this.menu = new Menu(this.menuNode, this);
+      this.menu = new PopupMenu(this.menuNode, this);
       this.menu.init();
     }
     else {
@@ -54,19 +55,19 @@ MenuButton.prototype.init = function () {
     throw new Error("MenuButton init error: 'aria-controls' id not found.")
   }
 
-  this.buttonNode.addEventListener('mouseover', function (event) {
+  this.domNode.addEventListener('mouseover', function (event) {
     that.handleMouseover(event);
   });
 
-  this.buttonNode.addEventListener('mouseout', function (event) {
+  this.domNode.addEventListener('mouseout', function (event) {
     that.handleMouseout(event);
   });
 
-  this.buttonNode.addEventListener('keydown', function (event) {
+  this.domNode.addEventListener('keydown', function (event) {
     that.handleKeydown(event);
   });
 
-  this.buttonNode.addEventListener('click', function (event) {
+  this.domNode.addEventListener('click', function (event) {
     that.handleClick(event);
   });
 };
