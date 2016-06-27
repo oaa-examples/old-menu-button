@@ -10,18 +10,20 @@
 *       child element of menuNode that represents a menuitem must have a
 *       'role' attribute with value 'menuitem'.
 *
-*   @param selectorObject
-*       The selector object associated with this popup menu. Examples include:
+*   @param owner
+*       The object that is a wrapper for the DOM element that 'owns' the menu,
+*       i.e. has an 'aria-owns' or 'aria-controls' attribute that references
+*       this menu's menuNode. Examples of owner objects include:
 *       1. MenuButton ('button' element with 'aria-controls' attribute)
 *       2. PopupMenuItem ('span' element with role='menuitem' and 'aria-owns'
 *          attribute).
-*       Interface assumptions: The selector object is expected to have the
-*       following properties:
-*       1. domNode: its related DOM element node for positioning information
+*       The owner object is expected to have the following properties:
+*       1. domNode: The owner object's DOM element node, needed for obtaining
+*          positioning information.
 *       2. hasHover: boolean that indicates whether domNode has responded to
 *          mouseover event with no subsequent mouseout event having occurred.
 */
-var PopupMenu = function (menuNode, selectorObject) {
+var PopupMenu = function (menuNode, owner) {
   // Check whether menuNode is a DOM element
   if (!menuNode instanceof Element)
     throw new TypeError("PopupMenu constructor argument 'menuNode' is not a DOM Element.");
@@ -36,8 +38,9 @@ var PopupMenu = function (menuNode, selectorObject) {
 
   menuNode.tabIndex = -1;
   this.menuNode = menuNode;
-  this.selectorObject = selectorObject;
+  this.owner = owner;
 
+  this.menuitems = [];
   this.firstItem = null;
   this.lastItem  = null;
 
@@ -67,7 +70,7 @@ var PopupMenu = function (menuNode, selectorObject) {
 *       for keydown, click, focus and blur events.
 */
 PopupMenu.prototype.init = function () {
-  var menuitem, that = this;
+  var menuitem, numItems, that = this;
 
   this.menuNode.addEventListener('mouseover', function (event) {
     that.handleMouseover(event);
@@ -81,9 +84,8 @@ PopupMenu.prototype.init = function () {
 
   while (menuitem) {
     if (menuitem.getAttribute('role')  === 'menuitem') {
+      this.menuitems.push(menuitem);
       menuitem.tabIndex = -1;
-      if (!this.firstItem) this.firstItem = menuitem;
-      this.lastItem = menuitem;
 
       menuitem.addEventListener('keydown', function (event) {
         that.handleKeydown(event);
@@ -102,6 +104,12 @@ PopupMenu.prototype.init = function () {
       });
     }
     menuitem = menuitem.nextElementSibling;
+  }
+
+  numItems = this.menuitems.length;
+  if (numItems > 0) {
+    this.firstItem = this.menuitems[0];
+    this.lastItem  = this.menuitems[numItems - 1]
   }
 };
 
@@ -135,7 +143,7 @@ PopupMenu.prototype.handleKeydown = function (event) {
       break;
 
     case this.keyCode.ESC:
-      this.setFocusToButton();
+      this.setFocusToOwnerElement();
       this.close(true);
       flag = true;
       break;
@@ -163,7 +171,7 @@ PopupMenu.prototype.handleKeydown = function (event) {
       break;
 
     case this.keyCode.TAB:
-      this.setFocusToButton();
+      this.setFocusToOwnerElement();
       this.close(true);
       break;
 
@@ -178,7 +186,7 @@ PopupMenu.prototype.handleKeydown = function (event) {
 };
 
 PopupMenu.prototype.handleClick = function (event) {
-  this.setFocusToButton();
+  this.setFocusToOwnerElement();
   this.close(true);
 };
 
@@ -206,54 +214,46 @@ PopupMenu.prototype.handleMouseout = function (event) {
 
 /* ADDITIONAL METHODS */
 
-PopupMenu.prototype.setFocusToButton = function () {
-  this.selectorObject.domNode.focus();
+PopupMenu.prototype.setFocusToOwnerElement = function () {
+  this.owner.domNode.focus();
 };
 
 PopupMenu.prototype.setFocusToPreviousItem = function (currentItem) {
-  var menuitem = currentItem.previousElementSibling;
+  var index;
 
-  while (menuitem) {
-    if (menuitem.getAttribute('role')  === 'menuitem') {
-      menuitem.focus();
-      break;
-    }
-    menuitem = menuitem.previousElementSibling;
-  }
-
-  if (!menuitem && this.lastItem) {
+  if (currentItem === this.firstItem) {
     this.lastItem.focus();
+  }
+  else {
+    index = this.menuitems.indexOf(currentItem);
+    this.menuitems[index - 1].focus();
   }
 };
 
 PopupMenu.prototype.setFocusToNextItem = function (currentItem) {
-  var menuitem = currentItem.nextElementSibling;
+  var index;
 
-  while (menuitem) {
-    if (menuitem.getAttribute('role')  === 'menuitem') {
-      menuitem.focus();
-      break;
-    }
-    menuitem = menuitem.nextElementSibling;
-  }
-
-  if (!menuitem && this.firstItem) {
+  if (currentItem === this.lastItem) {
     this.firstItem.focus();
+  }
+  else {
+    index = this.menuitems.indexOf(currentItem);
+    this.menuitems[index + 1].focus();
   }
 };
 
 PopupMenu.prototype.setFocusToFirstItem = function () {
-  if (this.firstItem) this.firstItem.focus();
+  this.firstItem.focus();
 };
 
 PopupMenu.prototype.setFocusToLastItem = function () {
-  if (this.lastItem) this.lastItem.focus();
+  this.lastItem.focus();
 };
 
 PopupMenu.prototype.open = function () {
   // get position and bounding rectangle of selector object's DOM node (e.g. button or menuitem)
-  var pos  = this.getPosition(this.selectorObject.domNode);
-  var rect = this.selectorObject.domNode.getBoundingClientRect();
+  var pos  = this.getPosition(this.owner.domNode);
+  var rect = this.owner.domNode.getBoundingClientRect();
 
   // set CSS properties
   this.menuNode.style.display = 'block';
@@ -266,7 +266,7 @@ PopupMenu.prototype.open = function () {
 };
 
 PopupMenu.prototype.close = function (force) {
-  if (force || (!this.hasFocus && !this.hasHover && !this.selectorObject.hasHover)) {
+  if (force || (!this.hasFocus && !this.hasHover && !this.owner.hasHover)) {
     this.menuNode.style.display = 'none';
     this.menuNode.setAttribute('aria-expanded', 'false');
   }
