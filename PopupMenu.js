@@ -24,17 +24,26 @@
 *          mouseover event with no subsequent mouseout event having occurred.
 */
 var PopupMenu = function (menuNode, owner) {
+  var elementChildren;
+
   // Check whether menuNode is a DOM element
   if (!menuNode instanceof Element)
-    throw new TypeError("PopupMenu constructor argument 'menuNode' is not a DOM Element.");
+    throw new TypeError("PopupMenu constructor argument menuNode is not a DOM Element.");
 
   // Check whether menuNode has role='menu'
   if (menuNode.getAttribute('role') !== 'menu')
-    throw new Error("PopupMenu constructor argument 'menuNode' does not have role of 'menu'")
+    throw new Error("PopupMenu constructor argument menuNode does not have attribute role=\"menu\".");
 
   // Check whether menuNode has child elements
   if (menuNode.childElementCount === 0)
-    throw new Error("PopupMenu constructor argument 'menuNode' has no Element children.")
+    throw new Error("PopupMenu constructor argument menuNode has no element children.")
+
+  // Check whether menuNode child elements all have role='menuitem'
+  elementChildren = menuNode.children;
+  for (var i = 0; i < elementChildren.length; i++) {
+    if (elementChildren[i].getAttribute('role') !== 'menuitem')
+      throw new Error("PopupMenu constructor argument menuNode has child elements that do not have attribute role=\"menuitem\".");
+  }
 
   menuNode.tabIndex = -1;
   this.menuNode = menuNode;
