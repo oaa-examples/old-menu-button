@@ -1,29 +1,27 @@
-/*
+/**
 *   @constructor PopupMenu
 *
 *   @desc
-*       Object that encapsulates data and behavior (via event handlers)
-*       of a custom HTML popup menu component.
+*       Wrapper object for a simple popup menu (without nested submenus)
 *
 *   @param menuNode
 *       The DOM element node that serves as the popup menu container. Each
 *       child element of menuNode that represents a menuitem must have a
 *       'role' attribute with value 'menuitem'.
 *
-*   @param owner
-*       The object that is a wrapper for the DOM element that 'owns' the menu,
-*       i.e. has an 'aria-owns' or 'aria-controls' attribute that references
-*       this menu's menuNode. Examples of owner objects include:
-*       1. MenuButton ('button' element with 'aria-controls' attribute)
-*       2. PopupMenuItem ('span' element with role='menuitem' and 'aria-owns'
-*          attribute).
-*       The owner object is expected to have the following properties:
-*       1. domNode: The owner object's DOM element node, needed for obtaining
-*          positioning information.
-*       2. hasHover: boolean that indicates whether domNode has responded to
-*          mouseover event with no subsequent mouseout event having occurred.
+*   @param controller
+*       The object that is a wrapper for the DOM element that controls the
+*       menu, e.g. a button element, with an 'aria-controls' attribute that
+*       references this menu's menuNode.
+*
+*       The controller object is expected to have the following properties:
+*       1. domNode: The controller object's DOM element node, need for
+*          retrieving positioning information.
+*       2. hasHover: boolean that indicates whether the controller object's
+*          domNode has responded to a mouseover event with no subsequent
+*          mouseout event having occurred.
 */
-var PopupMenu = function (menuNode, owner) {
+var PopupMenu = function (menuNode, controller) {
   var elementChildren;
 
   // Check whether menuNode is a DOM element
@@ -47,26 +45,13 @@ var PopupMenu = function (menuNode, owner) {
 
   menuNode.tabIndex = -1;
   this.menuNode = menuNode;
-  this.owner = owner;
+  this.controller = controller;
 
   this.menuitems = [];
   this.firstItem = null;
   this.lastItem  = null;
 
-  this.keyCode = Object.freeze({
-    'TAB'      :  9,
-    'RETURN'   : 13,
-    'ESC'      : 27,
-    'SPACE'    : 32,
-    'PAGEUP'   : 33,
-    'PAGEDOWN' : 34,
-    'END'      : 35,
-    'HOME'     : 36,
-    'LEFT'     : 37,
-    'UP'       : 38,
-    'RIGHT'    : 39,
-    'DOWN'     : 40
-  });
+  this.utils = MenuUtils();
 };
 
 /*
@@ -79,7 +64,7 @@ var PopupMenu = function (menuNode, owner) {
 *       Initialize firstItem and lastItem based on menuitems array order.
 */
 PopupMenu.prototype.init = function () {
-  var menuitem, numItems, that = this;
+  var element, numItems, that = this;
 
   this.menuNode.addEventListener('mouseover', function (event) {
     that.handleMouseover(event);
@@ -89,30 +74,15 @@ PopupMenu.prototype.init = function () {
     that.handleMouseout(event);
   });
 
-  menuitem = this.menuNode.firstElementChild;
+  // Traverse element children of menuNode to initialize its menuitems
+  element = this.menuNode.firstElementChild;
 
-  while (menuitem) {
-    if (menuitem.getAttribute('role')  === 'menuitem') {
-      this.menuitems.push(menuitem);
-      menuitem.tabIndex = -1;
-
-      menuitem.addEventListener('keydown', function (event) {
-        that.handleKeydown(event);
-      });
-
-      menuitem.addEventListener('click', function (event) {
-        that.handleClick(event);
-      });
-
-      menuitem.addEventListener('focus', function (event) {
-        that.handleFocus(event);
-      });
-
-      menuitem.addEventListener('blur', function (event) {
-        that.handleBlur(event);
-      });
+  while (element) {
+    if (element.getAttribute('role')  === 'menuitem') {
+      this.utils.initMenuitem(element, this);
+      this.menuitems.push(element);
     }
-    menuitem = menuitem.nextElementSibling;
+    element = element.nextElementSibling;
   }
 
   numItems = this.menuitems.length;
@@ -122,94 +92,7 @@ PopupMenu.prototype.init = function () {
   }
 };
 
-/* EVENT HANDLERS FOR MENU ITEMS */
-
-PopupMenu.prototype.handleKeydown = function (event) {
-  var tgt = event.currentTarget,
-      flag = false, clickEvent;
-
-  switch (event.keyCode) {
-    case this.keyCode.SPACE:
-    case this.keyCode.RETURN:
-      // Create simulated mouse event to mimic the behavior of ATs
-      // and let the event handler handleClick do the housekeeping.
-      try {
-        clickEvent = new MouseEvent('click', {
-          'view': window,
-          'bubbles': true,
-          'cancelable': true
-        });
-      }
-      catch(err) {
-        if (document.createEvent) {
-          // DOM Level 3 for IE 9+
-          clickEvent = document.createEvent('MouseEvents');
-          clickEvent.initEvent('click', true, true);
-        }
-      }
-      tgt.dispatchEvent(clickEvent);
-      flag = true;
-      break;
-
-    case this.keyCode.ESC:
-      this.setFocusToOwnerElement();
-      this.close(true);
-      flag = true;
-      break;
-
-    case this.keyCode.UP:
-      this.setFocusToPreviousItem(tgt);
-      flag = true;
-      break;
-
-    case this.keyCode.DOWN:
-      this.setFocusToNextItem(tgt);
-      flag = true;
-      break;
-
-    case this.keyCode.HOME:
-    case this.keyCode.PAGEUP:
-      this.setFocusToFirstItem();
-      flag = true;
-      break;
-
-    case this.keyCode.END:
-    case this.keyCode.PAGEDOWN:
-      this.setFocusToLastItem();
-      flag = true;
-      break;
-
-    case this.keyCode.TAB:
-      this.setFocusToOwnerElement();
-      this.close(true);
-      break;
-
-    default:
-      break;
-  }
-
-  if (flag) {
-    event.stopPropagation();
-    event.preventDefault();
-  }
-};
-
-PopupMenu.prototype.handleClick = function (event) {
-  this.setFocusToOwnerElement();
-  this.close(true);
-};
-
-PopupMenu.prototype.handleFocus = function (event) {
-  this.hasFocus = true;
-};
-
-PopupMenu.prototype.handleBlur = function (event) {
-  var that = this;
-  this.hasFocus = false;
-  setTimeout(function () { that.close(false) }, 300);
-};
-
-/* EVENT HANDLERS FOR MENU CONTAINER */
+/* EVENT HANDLERS */
 
 PopupMenu.prototype.handleMouseover = function (event) {
   this.hasHover = true;
@@ -221,10 +104,10 @@ PopupMenu.prototype.handleMouseout = function (event) {
   setTimeout(function () { that.close(false) }, 300);
 };
 
-/* ADDITIONAL METHODS */
+/* FOCUS MANAGEMENT METHODS */
 
-PopupMenu.prototype.setFocusToOwnerElement = function () {
-  this.owner.domNode.focus();
+PopupMenu.prototype.setFocusToController = function () {
+  this.controller.domNode.focus();
 };
 
 PopupMenu.prototype.setFocusToPreviousItem = function (currentItem) {
@@ -259,10 +142,12 @@ PopupMenu.prototype.setFocusToLastItem = function () {
   this.lastItem.focus();
 };
 
+/* MENU DISPLAY METHODS */
+
 PopupMenu.prototype.open = function () {
   // get position and bounding rectangle of selector object's DOM node (e.g. button or menuitem)
-  var pos  = this.getPosition(this.owner.domNode);
-  var rect = this.owner.domNode.getBoundingClientRect();
+  var pos  = this.utils.getPosition(this.controller.domNode);
+  var rect = this.controller.domNode.getBoundingClientRect();
 
   // set CSS properties
   this.menuNode.style.display = 'block';
@@ -275,20 +160,8 @@ PopupMenu.prototype.open = function () {
 };
 
 PopupMenu.prototype.close = function (force) {
-  if (force || (!this.hasFocus && !this.hasHover && !this.owner.hasHover)) {
+  if (force || (!this.hasFocus && !this.hasHover && !this.controller.hasHover)) {
     this.menuNode.style.display = 'none';
     this.menuNode.setAttribute('aria-expanded', 'false');
   }
-};
-
-PopupMenu.prototype.getPosition = function (element) {
-  var x = 0, y = 0;
-
-  while (element) {
-    x += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-    y += (element.offsetTop - element.scrollTop + element.clientTop);
-    element = element.offsetParent;
-  }
-
-  return { x: x, y: y };
 };
