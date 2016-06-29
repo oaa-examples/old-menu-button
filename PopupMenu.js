@@ -51,6 +51,9 @@ var PopupMenu = function (menuNode, controller) {
   this.firstItem = null;
   this.lastItem  = null;
 
+  this.hasFocus  = false;   // set by menuitem: handleFocus, handleBlur
+  this.hasHover  = false;   // set by menu: handleMouseover, handleMouseout
+
   this.utils = MenuUtils();
 };
 
