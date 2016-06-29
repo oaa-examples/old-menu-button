@@ -58,10 +58,9 @@ var PopupMenu = function (menuNode, controller) {
 *   @method PopupMenu.prototype.init
 *
 *   @desc
-*       Add menuNode event listeners for mouseover and mouseout.
-*       For each menuitem: push into menuitems array, set tabindex and add
-*         event listeners for keydown, click, focus and blur events.
-*       Initialize firstItem and lastItem based on menuitems array order.
+*       Add menuNode event listeners for mouseover and mouseout. Traverse
+*       menuNode children to configure each menuitem and populate menuitems
+*       array. Initialize firstItem and lastItem properties.
 */
 PopupMenu.prototype.init = function () {
   var element, numItems, that = this;
@@ -74,7 +73,7 @@ PopupMenu.prototype.init = function () {
     that.handleMouseout(event);
   });
 
-  // Traverse element children of menuNode to initialize its menuitems
+  // Configure element children of menuNode; populate menuitems array.
   element = this.menuNode.firstElementChild;
 
   while (element) {
@@ -85,6 +84,7 @@ PopupMenu.prototype.init = function () {
     element = element.nextElementSibling;
   }
 
+  // Use populated menuitems array to initialize firstItem and lastItem.
   numItems = this.menuitems.length;
   if (numItems > 0) {
     this.firstItem = this.menuitems[0];
