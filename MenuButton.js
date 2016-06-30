@@ -38,9 +38,8 @@ var MenuButton = function (domNode) {
 *       object associated with the menuNode; add event listeners.
 */
 MenuButton.prototype.init = function () {
-  var id, that = this;
+  var id = this.domNode.getAttribute('aria-controls');
 
-  id = this.domNode.getAttribute('aria-controls');
   if (id) {
     this.menuNode = document.getElementById(id);
     if (this.menuNode) {
@@ -55,21 +54,10 @@ MenuButton.prototype.init = function () {
     throw new Error("MenuButton init error: 'aria-controls' id not found.")
   }
 
-  this.domNode.addEventListener('mouseover', function (event) {
-    that.handleMouseover(event);
-  });
-
-  this.domNode.addEventListener('mouseout', function (event) {
-    that.handleMouseout(event);
-  });
-
-  this.domNode.addEventListener('keydown', function (event) {
-    that.handleKeydown(event);
-  });
-
-  this.domNode.addEventListener('click', function (event) {
-    that.handleClick(event);
-  });
+  this.domNode.addEventListener('mouseover', this.handleMouseover.bind(this));
+  this.domNode.addEventListener('mouseout',  this.handleMouseout.bind(this));
+  this.domNode.addEventListener('keydown',   this.handleKeydown.bind(this));
+  this.domNode.addEventListener('click',     this.handleClick.bind(this));
 };
 
 /* EVENT HANDLERS */
@@ -124,7 +112,6 @@ MenuButton.prototype.handleMouseover = function (event) {
 };
 
 MenuButton.prototype.handleMouseout = function (event) {
-  var that = this;
   this.hasHover = false;
-  setTimeout(function () { that.menu.close(false) }, 300);
+  setTimeout(this.menu.close.bind(this.menu, false), 300);
 };

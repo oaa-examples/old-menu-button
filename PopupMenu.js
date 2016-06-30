@@ -66,15 +66,10 @@ var PopupMenu = function (menuNode, controller) {
 *       array. Initialize firstItem and lastItem properties.
 */
 PopupMenu.prototype.init = function () {
-  var element, numItems, that = this;
+  var element, numItems;
 
-  this.menuNode.addEventListener('mouseover', function (event) {
-    that.handleMouseover(event);
-  });
-
-  this.menuNode.addEventListener('mouseout', function (event) {
-    that.handleMouseout(event);
-  });
+  this.menuNode.addEventListener('mouseover', this.handleMouseover.bind(this));
+  this.menuNode.addEventListener('mouseout',  this.handleMouseout.bind(this));
 
   // Configure element children of menuNode; populate menuitems array.
   element = this.menuNode.firstElementChild;
@@ -102,9 +97,8 @@ PopupMenu.prototype.handleMouseover = function (event) {
 };
 
 PopupMenu.prototype.handleMouseout = function (event) {
-  var that = this;
   this.hasHover = false;
-  setTimeout(function () { that.close(false) }, 300);
+  setTimeout(this.close.bind(this, false), 300);
 };
 
 /* FOCUS MANAGEMENT METHODS */
