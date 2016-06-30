@@ -53,8 +53,6 @@ var PopupMenu = function (menuNode, controller) {
 
   this.hasFocus  = false;   // set by menuitem: handleFocus, handleBlur
   this.hasHover  = false;   // set by menu: handleMouseover, handleMouseout
-
-  this.utils = MenuUtils();
 };
 
 /*
@@ -66,7 +64,7 @@ var PopupMenu = function (menuNode, controller) {
 *       array. Initialize firstItem and lastItem properties.
 */
 PopupMenu.prototype.init = function () {
-  var element, numItems;
+  var element, menuitem, numItems;
 
   this.menuNode.addEventListener('mouseover', this.handleMouseover.bind(this));
   this.menuNode.addEventListener('mouseout',  this.handleMouseout.bind(this));
@@ -76,7 +74,8 @@ PopupMenu.prototype.init = function () {
 
   while (element) {
     if (element.getAttribute('role')  === 'menuitem') {
-      this.utils.initMenuitem(element, this);
+      menuitem = new MenuItem(element, this);
+      menuitem.init();
       this.menuitems.push(element);
     }
     element = element.nextElementSibling;
@@ -141,9 +140,21 @@ PopupMenu.prototype.setFocusToLastItem = function () {
 
 /* MENU DISPLAY METHODS */
 
+PopupMenu.prototype.getPosition = function (element) {
+  var x = 0, y = 0;
+
+  while (element) {
+    x += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+    y += (element.offsetTop - element.scrollTop + element.clientTop);
+    element = element.offsetParent;
+  }
+
+  return { x: x, y: y };
+};
+
 PopupMenu.prototype.open = function () {
   // get position and bounding rectangle of selector object's DOM node (e.g. button or menuitem)
-  var pos  = this.utils.getPosition(this.controller.domNode);
+  var pos  = this.getPosition(this.controller.domNode);
   var rect = this.controller.domNode.getBoundingClientRect();
 
   // set CSS properties
