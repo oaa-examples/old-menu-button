@@ -9,10 +9,10 @@
 *       child element of menuNode that represents a menuitem must have a
 *       'role' attribute with value 'menuitem'.
 *
-*   @param controller
+*   @param controllerObj
 *       The object that is a wrapper for the DOM element that controls the
 *       menu, e.g. a button element, with an 'aria-controls' attribute that
-*       references this menu's menuNode.
+*       references this menu's menuNode. See MenuButton.js
 *
 *       The controller object is expected to have the following properties:
 *       1. domNode: The controller object's DOM element node, need for
@@ -21,7 +21,7 @@
 *          domNode has responded to a mouseover event with no subsequent
 *          mouseout event having occurred.
 */
-var PopupMenu = function (menuNode, controller) {
+var PopupMenu = function (menuNode, controllerObj) {
   var elementChildren;
 
   // Check whether menuNode is a DOM element
@@ -45,14 +45,14 @@ var PopupMenu = function (menuNode, controller) {
 
   menuNode.tabIndex = -1;
   this.menuNode = menuNode;
-  this.controller = controller;
+  this.controller = controllerObj;
 
-  this.menuitems = [];
+  this.menuitems = [];      // see PopupMenu init method
   this.firstItem = null;
   this.lastItem  = null;
 
-  this.hasFocus  = false;   // set by menuitem: handleFocus, handleBlur
-  this.hasHover  = false;   // set by menu: handleMouseover, handleMouseout
+  this.hasFocus  = false;   // see MenuItem handleFocus, handleBlur
+  this.hasHover  = false;   // see PopupMenu handleMouseover, handleMouseout
 };
 
 /*
