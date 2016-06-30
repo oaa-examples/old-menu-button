@@ -11,7 +11,7 @@
 *
 *   @param menuObj
 *       The object that is a wrapper for the PopupMenu DOM element that
-*       contains the menu item DOM element.
+*       contains the menu item DOM element. See PopupMenu.js
 */
 var MenuItem = function (domNode, menuObj) {
 
@@ -43,8 +43,8 @@ MenuItem.prototype.init = function () {
   this.domNode.addEventListener('blur',    this.handleBlur.bind(this));
 };
 
-// Event handlers for menuitem elements in a PopupMenu. See PopupMenu.js
-// for the definition of the object passed in as the menu parameter.
+/* EVENT HANDLERS */
+
 MenuItem.prototype.handleKeydown = function (event) {
   var tgt = event.currentTarget,
       flag = false, clickEvent;
