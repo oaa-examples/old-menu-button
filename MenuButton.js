@@ -12,12 +12,10 @@
 *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
-*/
-
-/*
+*
 *   File:   MenuButton.js
 *
-*   Desc:   MenuButton widget that implements ARIA Authoring Practices
+*   Desc:   Menu button widget that implements ARIA Authoring Practices guidelines
 *
 *   Author: Nicholas Hoyt
 */
