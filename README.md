@@ -34,7 +34,7 @@ ARIA role:  `menu`
 
 ARIA properties & states:
 
-*`aria-expanded`: set to true when menu is visible, false otherwise
+* `aria-expanded`: set to true when menu is visible, false otherwise
 
 Dependencies:
 
