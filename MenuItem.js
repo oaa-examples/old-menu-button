@@ -15,7 +15,7 @@
 *
 *   File:   MenuItem.js
 *
-*   Desc:   Menu item widget that implements ARIA Authoring Practices guidelines
+*   Desc:   Menu item widget that implements ARIA Authoring Practices
 *
 *   Author: Nicholas Hoyt
 */

@@ -15,7 +15,7 @@
 *
 *   File:   MenuButton.js
 *
-*   Desc:   Menu button widget that implements ARIA Authoring Practices guidelines
+*   Desc:   Menu button widget that implements ARIA Authoring Practices
 *
 *   Author: Nicholas Hoyt
 */

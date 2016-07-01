@@ -15,7 +15,7 @@
 *
 *   File:   PopupMenu.js
 *
-*   Desc:   Popup menu widget that implements ARIA Authoring Practices guidelines
+*   Desc:   Popup menu widget that implements ARIA Authoring Practices
 *
 *   Author: Nicholas Hoyt
 */
