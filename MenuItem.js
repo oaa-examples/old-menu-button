@@ -20,7 +20,7 @@
 *   Author: Nicholas Hoyt
 */
 
-/**
+/*
 *   @constructor MenuItem
 *
 *   @desc
