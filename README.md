@@ -1,21 +1,46 @@
 # menu-button
 Example that combines a keyboard accessible menu button, popup menu and menuitem widgets
 
+## HTML Markup
+The HTML file for this example is `example.html`.
+
+### `button` element
+* In this example, a `button` element is used to create a custom menu button.
+* The `button` element is reachable, by default, in the tab order of the document.
+* The delegate object for the `button` element is an instance of MenuButton, which is
+  instantiated and initialized in the `script` tag of `example.html`.
+
+#### ARIA role, properties and states
+* Role: `button` (default)
+* Property: `aria-controls`: specifies the menu container element that the button controls
+* State: `aria-expanded`: set to true when the button's menu is visible, false otherwise
+
+### `ul` element
+* In this example, a `ul` element` is used to create a custom popup menu.
+* The delegate object for the `ul` elements is an instance of PopupMenu, which is
+  instantiated and initialized by the MenuButton object.
+
+#### ARIA role, properties and states
+* Role: `menu`
+
+### `li` element
+* In this example, `li` elements are used to create custom menu items.
+* The delegate object for each `li` element in an instance of MenuItem, which are
+  instantiated and initialized by the PopupMenu object.
+
+#### ARIA role, properties and states
+* Role: `menuitem`
+
 ## Widget Descriptions
 
 ### MenuButton
-* In this example, a `button` element is used, with default ARIA role `button`.
-* The `button` element is reachable in the tab order of the document.
-
-#### ARIA properties & states
-The `button` element has the following ARIA attributes:
-
-* `aria-controls`: specifies the menu container element that the button controls
-* `aria-expanded`: set to true when its menu is visible, false otherwise
+* JavaScript file: `MenuButton.js`
+* Serves as the delegate for an HTML `button` element that acts as a menu button.
 
 #### Related objects
 
-* PopupMenu: menu delegate that specifies the behavior of the menu container
+* PopupMenu: The MenuButton object instantiates and initializes a PopupMenu object,
+  which is the delegate for the `ul` `menu` element that it controls.
 
 #### Event Listeners & Interaction Behavior
 
@@ -29,15 +54,18 @@ The `button` element has the following ARIA attributes:
 |              | `click`                      | Open menu; set focus to first item | no  |
 
 ### PopupMenu
-
-* In this example, a `ul` element is used, with ARIA role `menu`.
+* JavaScript file: `PopupMenu.js`
+* Serves as the delegate for an HTML `ul` element that acts as a popup menu.
 * Each child `li` element of the `ul` is expected to have role `menuitem`.
-* The PopupMenu object saves a reference to each menuitem element.
+* The PopupMenu object saves a reference to each `li` `menuitem` element.
+* It also saves the state of the menu in its properties `hasFocus` and `hasHover`.
 
 #### Related objects
 
-* MenuButton: delegate for the element that controls the menu visibility
-* MenuItem: delegate that specifies the behavior for each menuitem that the PopupMenu contains
+* MenuButton: The PopupMenu is initialized with a reference to the `controllerObj`, which in this
+  example is a MenuButton object, which is the delegate for the `button` element that controls the menu.
+* MenuItem: The PopupMenu instantiates and initializes a MenuItem object for each `li` `menuitem` it contains,
+  which, in turn, adds the necessary event listeners to the `li`.
 
 #### Event Listeners & Interaction Behavior
 
@@ -47,14 +75,16 @@ The `button` element has the following ARIA attributes:
 |              | `mouseout`          | Close menu (if no children have focus) | no |
 
 ### MenuItem
-* In this example, an `li` element is used, with ARIA role `menuitem`.
-* The MenuItem object has a reference to its corresponding PopupMenu.
-* Most of the keyboard event handling is done by the MenuItem object.
-* In response to those events, it calls the methods of its related PopuMenu object.
+* JavaScript file: `MenuItem.js`
+* The MenuItem object serves as the delegate for an HTML `li` element that act as menu item.
+* It implements `menuitem` behavior by adding the necessary event listeners to an `li` element.
+* Most of the keyboard event handling in this example is done by the MenuItem object.
+* In response to those events, the MenuItem object calls the methods of its related PopuMenu object.
 
 #### Related objects
 
-* PopupMenu: delegate for the container element that contains the menuitem elements
+* PopupMenu: Each MenuItem object is instantiated with a reference to its PopupMenu object, which is the
+  delegate for the `ul` `menu` element that contains the `li` `menuitem` element.
 
 #### Event Listeners & Interaction Behavior
 
