@@ -164,12 +164,12 @@ PopupMenu.prototype.open = function () {
   this.menuNode.style.left = pos.x + "px";
 
   // set aria-expanded attribute
-  this.menuNode.setAttribute('aria-expanded', 'true');
+  this.controller.domNode.setAttribute('aria-expanded', 'true');
 };
 
 PopupMenu.prototype.close = function (force) {
   if (force || (!this.hasFocus && !this.hasHover && !this.controller.hasHover)) {
     this.menuNode.style.display = 'none';
-    this.menuNode.setAttribute('aria-expanded', 'false');
+    this.controller.domNode.setAttribute('aria-expanded', 'false');
   }
 };

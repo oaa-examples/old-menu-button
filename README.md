@@ -8,9 +8,10 @@ Corresponding HTML: `button` element, reachable in the tab order of the document
 
 ARIA role:  `button`
 
-Dependencies:
+ARIA properties & states:
 
 * `aria-controls` attribute specifies the menu container element that the button controls
+* `aria-expanded`: set to true when menu is visible, false otherwise
 
 Related objects:
 
@@ -31,10 +32,6 @@ Related objects:
 Corresponding HTML: `ul` element, conditionally visible
 
 ARIA role:  `menu`
-
-ARIA properties & states:
-
-* `aria-expanded`: set to true when menu is visible, false otherwise
 
 Dependencies:
 

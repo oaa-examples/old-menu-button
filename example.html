@@ -15,7 +15,7 @@
     <p>This example provides a menu of actions for changing the state in a web application.</p>
     <p>
       <a href="#">Link that precedes button</a>
-      <button id="mb1" aria-haspopup="true" aria-controls="menu1">
+      <button id="mb1" aria-haspopup="true" aria-controls="menu1" aria-expanded="false">
          Actions <img alt="" width="10px" style="padding-bottom: 1px" src="down-arrow.png"/>
       </button>
       <label>
@@ -25,7 +25,6 @@
     </p>
     <ul id="menu1"
       role="menu"
-      aria-expanded="false"
       aria-labelledby="mb1">
       <li role="menuitem" onclick="updateLastAction(event)">
         Action 1
