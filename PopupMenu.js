@@ -19,7 +19,8 @@
 *
 *   Author: Nicholas Hoyt
 */
-/**
+
+/*
 *   @constructor PopupMenu
 *
 *   @desc
@@ -43,25 +44,27 @@
 *          mouseout event having occurred.
 */
 var PopupMenu = function (menuNode, controllerObj) {
-  var elementChildren;
+  var elementChildren,
+      msgPrefix = "PopupMenu constructor argument menuNode ";
 
   // Check whether menuNode is a DOM element
   if (!menuNode instanceof Element)
-    throw new TypeError("PopupMenu constructor argument menuNode is not a DOM Element.");
+    throw new TypeError(msgPrefix + "is not a DOM Element.");
 
   // Check whether menuNode has role='menu'
   if (menuNode.getAttribute('role') !== 'menu')
-    throw new Error("PopupMenu constructor argument menuNode does not have attribute role=\"menu\".");
+    throw new Error(msgPrefix + "does not specify role=\"menu\".");
 
   // Check whether menuNode has child elements
   if (menuNode.childElementCount === 0)
-    throw new Error("PopupMenu constructor argument menuNode has no element children.")
+    throw new Error(msgPrefix + "has no element children.")
 
   // Check whether menuNode child elements all have role='menuitem'
   elementChildren = menuNode.children;
   for (var i = 0; i < elementChildren.length; i++) {
     if (elementChildren[i].getAttribute('role') !== 'menuitem')
-      throw new Error("PopupMenu constructor argument menuNode has child elements that do not have attribute role=\"menuitem\".");
+      throw new Error(msgPrefix +
+        "has child elements that do not specify role=\"menuitem\".");
   }
 
   menuNode.tabIndex = -1;
@@ -174,7 +177,7 @@ PopupMenu.prototype.getPosition = function (element) {
 };
 
 PopupMenu.prototype.open = function () {
-  // get position and bounding rectangle of selector object's DOM node (e.g. button or menuitem)
+  // get position and bounding rectangle of controller object's DOM node
   var pos  = this.getPosition(this.controller.domNode);
   var rect = this.controller.domNode.getBoundingClientRect();
 
