@@ -4,18 +4,18 @@ Example that combines a keyboard accessible menu button, popup menu and menuitem
 ## Widget Descriptions
 
 ### MenuButton
-Corresponding HTML: `button` element, reachable in the tab order of the document
+* In this example, a `button` element is used, with default ARIA role `button`.
+* The `button` element is reachable in the tab order of the document.
 
-ARIA role:  `button`
+#### ARIA properties & states
+The `button` element has the following ARIA attributes:
 
-ARIA properties & states:
+* `aria-controls`: specifies the menu container element that the button controls
+* `aria-expanded`: set to true when its menu is visible, false otherwise
 
-* `aria-controls` attribute: specifies the menu container element that the button controls
-* `aria-expanded` attribute: set to true when menu is visible, false otherwise
+#### Related objects
 
-Related objects:
-
-* PopupMenu: delegate that specifies behavior of the menu container
+* PopupMenu: menu delegate that specifies the behavior of the menu container
 
 #### Event Listeners & Interaction Behavior
 
@@ -29,20 +29,15 @@ Related objects:
 |              | `click`                      | Open menu; set focus to first item | no  |
 
 ### PopupMenu
-Corresponding HTML: `ul` element, conditionally visible
 
-* Menu container element is expected to have `role="menu"`
-* Each child element of the container is expected to have `role="menuitem"`
-* PopupMenu saves a reference to each menuitem element
+* In this example, a `ul` element is used, with ARIA role `menu`.
+* Each child `li` element of the `ul` is expected to have role `menuitem`.
+* The PopupMenu object saves a reference to each menuitem element.
 
-ARIA role:  `menu`
-
-ARIA properties & states:
-
-Related objects:
+#### Related objects
 
 * MenuButton: delegate for the element that controls the menu visibility
-* MenuItem: delegate that specifies behavior for each menuitem that the menu contains
+* MenuItem: delegate that specifies the behavior for each menuitem that the PopupMenu contains
 
 #### Event Listeners & Interaction Behavior
 
@@ -52,16 +47,14 @@ Related objects:
 |              | `mouseout`          | Close menu (if no children have focus) | no |
 
 ### MenuItem
-Corresponding HTML: `li` element
+* In this example, an `li` element is used, with ARIA role `menuitem`.
+* The MenuItem object has a reference to its corresponding PopupMenu.
+* Most of the keyboard event handling is done by the MenuItem object.
+* In response to those events, it calls the methods of its related PopuMenu object.
 
-ARIA role:  `menuitem`
+#### Related objects
 
-Dependencies: PopupMenu: delegate for the DOM menu container element; calls its methods for
-setting focus within the menu and for closing the menu
-
-Related objects:
-
-* PopupMenu: delegate for the container element that contains the menuitem
+* PopupMenu: delegate for the container element that contains the menuitem elements
 
 #### Event Listeners & Interaction Behavior
 
