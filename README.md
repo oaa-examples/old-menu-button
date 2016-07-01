@@ -10,8 +10,8 @@ ARIA role:  `button`
 
 ARIA properties & states:
 
-* `aria-controls` attribute specifies the menu container element that the button controls
-* `aria-expanded`: set to true when menu is visible, false otherwise
+* `aria-controls` attribute: specifies the menu container element that the button controls
+* `aria-expanded` attribute: set to true when menu is visible, false otherwise
 
 Related objects:
 
@@ -31,13 +31,13 @@ Related objects:
 ### PopupMenu
 Corresponding HTML: `ul` element, conditionally visible
 
-ARIA role:  `menu`
-
-Dependencies:
-
 * Menu container element is expected to have `role="menu"`
 * Each child element of the container is expected to have `role="menuitem"`
 * PopupMenu saves a reference to each menuitem element
+
+ARIA role:  `menu`
+
+ARIA properties & states:
 
 Related objects:
 
