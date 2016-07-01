@@ -16,8 +16,8 @@ The HTML file for this example is `example.html`.
 * State: `aria-expanded`: set to true when the button's menu is visible, false otherwise
 
 ### `ul` element
-* In this example, a `ul` element` is used to create a custom popup menu.
-* The delegate object for the `ul` elements is an instance of PopupMenu, which is
+* In this example, a `ul` element is used to create a custom popup menu.
+* The delegate object for the `ul` element is an instance of PopupMenu, which is
   instantiated and initialized by the MenuButton object.
 
 #### ARIA role, properties and states
