@@ -45,7 +45,7 @@ The HTML file for this example is `example.html`.
 #### Event Listeners & Interaction Behavior
 
 | Type         | Event / Key                  | Behavior                           | Prevent Default |
-| :----------- | :--------------------------- |:---------------------------------- | :-------------- |
+| :----------- | :--------------------------- | :--------------------------------- | :-------------- |
 | Keyboard     | `keydown` / `space` `return` | Open menu; set focus to first item | yes |
 |              | `keydown` / `up arrow`       | Open menu; set focus to last item  | yes |
 |              | `keydown` / `down arrow`     | Open menu; set focus to first item | yes |
@@ -70,7 +70,7 @@ The HTML file for this example is `example.html`.
 #### Event Listeners & Interaction Behavior
 
 | Type         | Event / Key         | Behavior      | Prevent Default |
-| :----------- | :------------------ |:------------- | :-------------- |
+| :----------- | :------------------ | :------------ | :-------------- |
 | Mouse        | `mouseover`         | Save hover state (affects whether menu is closed by other means)  | no |
 |              | `mouseout`          | Close menu (if no children have focus) | no |
 
@@ -89,7 +89,7 @@ The HTML file for this example is `example.html`.
 #### Event Listeners & Interaction Behavior
 
 | Type         | Event / Key                    | Behavior                           | Prevent Default |
-| :----------- | :----------------------------- |:---------------------------------- | :-------------- |
+| :----------- | :----------------------------- | :--------------------------------- | :-------------- |
 | Keyboard     | `keydown` / `space` `return`   | Generate click event (see mouse click behavior) | yes |
 |              | `keydown` / `esc` `tab`        | Close menu; set focus to controller element | no |
 |              | `keydown` / `up arrow`         | Set focus to previous item (wraps) | yes |
