@@ -10,14 +10,21 @@ Rendered as a `button` element, reachable in the tab order of the document.
 
 | Type         | Event / Key         | Behavior      |
 | :----------- | :------------------ |:------------- |
-| Keyboard     | `keydown` / `space` `return` | <ul><li>Open menu</li><li>Set focus to first item</li></ul> |
-|              | `keydown` / `up arrow`       | <ul><li>Open menu</li><li>Set focus to last item</li></ul>  |
-|              | `keydown` / `down arrow`     | <ul><li>Open menu</li><li>Set focus to first item</li></ul> |
-| Mouse        | `mouseover`                  | <ul><li>Open menu</li></ul>  |
-|              | `mouseout`                   | <ul><li>Close menu</li></ul> |
+| Keyboard     | `keydown` / `space` `return` | Open menu; Set focus to first item |
+|              | `keydown` / `up arrow`       | Open menu; Set focus to last item  |
+|              | `keydown` / `down arrow`     | Open menu; Set focus to first item |
+| Mouse        | `mouseover`                  | Open menu  |
+|              | `mouseout`                   | Close menu |
 
 ### PopupMenu
 Rendered as a conditionally-displayed `ul` list element
+
+#### Event Listeners & Interaction Behavior
+
+| Type         | Event / Key         | Behavior      |
+| :----------- | :------------------ |:------------- |
+| Mouse        | `mouseover`                  | Save hover state (used for conditionally closing menu)  |
+|              | `mouseout`                   | Conditionally close menu (depending on hover state) |
 
 
 ### MenuItem
