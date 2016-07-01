@@ -20,12 +20,10 @@
       </button>
       <label>
         Last Action:
-        <input id="action_output" value="">
+        <input id="action-output" value="">
       </label>
     </p>
-    <ul id="menu1"
-      role="menu"
-      aria-labelledby="mb1">
+    <ul id="menu1" role="menu" aria-labelledby="mb1">
       <li role="menuitem" onclick="updateLastAction(event)">
         Action 1
       </li>
@@ -45,9 +43,9 @@
     menubutton.init();
   </script>
   <script type="text/javascript">
-    document.getElementById("action_output").value = "none";
+    document.getElementById("action-output").value = "none";
     function updateLastAction(event) {
-      document.getElementById("action_output").value = event.currentTarget.innerHTML;
+      document.getElementById("action-output").value = event.currentTarget.innerHTML;
     }
   </script>
 </body>
