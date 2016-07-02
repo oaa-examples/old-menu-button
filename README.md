@@ -1,6 +1,8 @@
 # menu-button
-This example illustrates the creation of a custom menu button, popup menu and menu item widgets
-that implement the keyboard interactions recommended by the W3C ARIA Authoring Practices.
+This example illustrates the creation of custom menu button, popup menu and menu
+item widgets that implement the keyboard interactions and utilize the ARIA roles,
+properties and states specified by the [WAI-ARIA Authoring Practices 1.1]
+(http://www.w3.org/TR/wai-aria-practices-1.1).
 
 ----------------------------------------------------------------
 ## HTML Markup
