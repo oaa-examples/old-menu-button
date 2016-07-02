@@ -42,7 +42,7 @@ var MenuButton = function (domNode) {
 
   this.domNode  = domNode;
   this.hasHover = false;  // see MenuButton handleMouseover, handleMouseout
-  this.menuNode = null;
+  this.menuNode = null;   // see MenuButton init method
 
   this.keyCode = Object.freeze({
     'RETURN' : 13,
