@@ -70,8 +70,7 @@ __Event Listeners & Interaction Behavior__
 
 __Related objects__
 
-* MenuButton: The PopupMenu is initialized with a reference to the `controllerObj`, which in this
-  example is a MenuButton object, which is the delegate for the `button` element that controls the menu.
+* MenuButton: The PopupMenu is initialized with a reference to its MenuButton controller object, which is the delegate for the `button` element that controls the menu.
 * MenuItem: The PopupMenu instantiates and initializes a MenuItem object for each `li` `menuitem` it contains,
   which, in turn, adds the necessary event listeners to the `li`.
 
@@ -80,7 +79,9 @@ __Event Listeners & Interaction Behavior__
 | Type         | Event / Key         | Behavior      | Prevent Default |
 | :----------- | :------------------ | :------------ | :-------------- |
 | Mouse        | `mouseover`         | Save hover state (affects whether menu is closed by other means)  | no |
-|              | `mouseout`          | Close menu (if no children have focus) | no |
+|              | `mouseout`          | Conditionally* close menu | no |
+
+\* dependent on focus state of menuitem elements and hover state of controller element
 
 ### MenuItem
 * JavaScript file: `MenuItem.js`
