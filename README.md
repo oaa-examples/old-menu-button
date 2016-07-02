@@ -1,50 +1,53 @@
 # menu-button
-Example that combines a keyboard accessible menu button, popup menu and menuitem widgets
+This example illustrates the creation of a custom menu button, popup menu and menu item widgets
+that implement the keyboard interactions recommended by the W3C ARIA Authoring Practices.
 
+----------------------------------------------------------------
 ## HTML Markup
 The HTML file for this example is `example.html`.
 
-### `button` element
+### button element
 * In this example, a `button` element is used to create a custom menu button.
 * The `button` element is reachable, by default, in the tab order of the document.
 * The delegate object for the `button` element is an instance of MenuButton, which is
   instantiated and initialized in the `script` tag of `example.html`.
 
-#### ARIA role, properties and states
+__ARIA role, properties and states__
 * Role: `button` (default)
-* Property: `aria-controls`: specifies the menu container element that the button controls
-* State: `aria-expanded`: set to true when the button's menu is visible, false otherwise
+* Property: `aria-controls` &#8211; specifies the menu container element that the button controls
+* State: `aria-expanded` &#8211; set to true when the button's menu is visible, false otherwise
 
-### `ul` element
+### ul element
 * In this example, a `ul` element is used to create a custom popup menu.
 * The `ul` element is the menu container element; its children are `li` elements that
   act as menu items.
 * The delegate object for the `ul` menu container element is an instance of PopupMenu,
   which is instantiated and initialized by the MenuButton object.
 
-#### ARIA role, properties and states
+__ARIA role, properties and states__
 * Role: `menu`
 
-### `li` element
+### li element
 * In this example, `li` elements are used to create custom menu items.
 * The delegate object for the `li` element is an instance of MenuItem, which is
   instantiated and initialized by the PopupMenu object.
 
-#### ARIA role, properties and states
+__ARIA role, properties and states__
 * Role: `menuitem`
 
+----------------------------------------------------------------
 ## Widget Descriptions
 
 ### MenuButton
 * JavaScript file: `MenuButton.js`
 * Serves as the delegate for an HTML `button` element that acts as a menu button.
 
-#### Related objects
+__Related objects__
 
 * PopupMenu: The MenuButton object instantiates and initializes a PopupMenu object,
   which is the delegate for the `ul` `menu` element that it controls.
 
-#### Event Listeners & Interaction Behavior
+__Event Listeners & Interaction Behavior__
 
 | Type         | Event / Key                  | Behavior                           | Prevent Default |
 | :----------- | :--------------------------- | :--------------------------------- | :-------------- |
@@ -62,14 +65,14 @@ The HTML file for this example is `example.html`.
 * The PopupMenu object saves a reference to each `li` `menuitem` element.
 * It also saves the state of the menu in its properties `hasFocus` and `hasHover`.
 
-#### Related objects
+__Related objects__
 
 * MenuButton: The PopupMenu is initialized with a reference to the `controllerObj`, which in this
   example is a MenuButton object, which is the delegate for the `button` element that controls the menu.
 * MenuItem: The PopupMenu instantiates and initializes a MenuItem object for each `li` `menuitem` it contains,
   which, in turn, adds the necessary event listeners to the `li`.
 
-#### Event Listeners & Interaction Behavior
+__Event Listeners & Interaction Behavior__
 
 | Type         | Event / Key         | Behavior      | Prevent Default |
 | :----------- | :------------------ | :------------ | :-------------- |
@@ -83,12 +86,12 @@ The HTML file for this example is `example.html`.
 * Most of the keyboard event handling in this example is done by the MenuItem object.
 * In response to those events, the MenuItem object calls the methods of its related PopuMenu object.
 
-#### Related objects
+__Related objects__
 
 * PopupMenu: Each MenuItem object is instantiated with a reference to its PopupMenu object, which is the
   delegate for the `ul` `menu` element that contains the `li` `menuitem` element.
 
-#### Event Listeners & Interaction Behavior
+__Event Listeners & Interaction Behavior__
 
 | Type         | Event / Key                    | Behavior                           | Prevent Default |
 | :----------- | :----------------------------- | :--------------------------------- | :-------------- |
