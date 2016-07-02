@@ -17,6 +17,7 @@ The HTML file for this example is `example.html`.
 __ARIA role, properties and states__
 * Role: `button` (default)
 * Property: `aria-controls` &#8211; specifies the menu container element that the button controls
+* Property: `aria-haspopup` &#8211; indicates that activating the button results in the display of a popup menu
 * State: `aria-expanded` &#8211; set to true when the button's menu is visible, false otherwise
 
 ### ul element
