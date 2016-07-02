@@ -18,7 +18,7 @@ The HTML file for this example is `example.html`.
 ### `ul` element
 * In this example, a `ul` element is used to create a custom popup menu.
 * The `ul` element is the menu container element; its children are `li` elements that
-  acts as menu items.
+  act as menu items.
 * The delegate object for the `ul` menu container element is an instance of PopupMenu,
   which is instantiated and initialized by the MenuButton object.
 
