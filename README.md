@@ -30,7 +30,7 @@ __ARIA role, properties and states__
 __ARIA role, properties and states__
 * Role: `menu`
 
-### li element
+### li elements
 * In this example, `li` elements are used to create custom menu items.
 * The delegate object for the `li` element is an instance of MenuItem, which is
   instantiated and initialized by the PopupMenu object.
@@ -79,13 +79,11 @@ __Event Listeners & Interaction Behavior__
 | Type         | Event / Key         | Behavior      | Prevent Default |
 | :----------- | :------------------ | :------------ | :-------------- |
 | Mouse        | `mouseover`         | Save hover state (affects whether menu is closed by other means)  | no |
-|              | `mouseout`          | Conditionally* close menu | no |
-
-\* dependent on focus state of menuitem elements and hover state of controller element
+|              | `mouseout`          | Conditionally close menu (dependent on focus state of menuitem elements and hover state of controller element)| no |
 
 ### MenuItem
 * JavaScript file: `MenuItem.js`
-* The MenuItem object serves as the delegate for an HTML `li` element that act as menu item.
+* The MenuItem object serves as the delegate for an HTML `li` element that acts as a menu item.
 * It implements `menuitem` behavior by adding the necessary event listeners to an `li` element.
 * Most of the keyboard event handling in this example is done by the MenuItem object.
 * In response to those events, the MenuItem object calls the methods of its related PopuMenu object.
