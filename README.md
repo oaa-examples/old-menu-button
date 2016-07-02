@@ -76,10 +76,12 @@ __Related objects__
 
 __Event Listeners & Interaction Behavior__
 
-| Type         | Event / Key         | Behavior      | Prevent Default |
+| Type         | Event               | Behavior      | Prevent Default |
 | :----------- | :------------------ | :------------ | :-------------- |
 | Mouse        | `mouseover`         | Save hover state (affects whether menu is closed by other means)  | no |
-|              | `mouseout`          | Conditionally close menu (dependent on focus state of menuitem elements and hover state of controller element)| no |
+|              | `mouseout`          | Conditionally close menu | no |
+
+Note:  Whether the PopupMenu's `mouseout` event handler closes the menu depends on (a) the focus state of its menuitem elements and (b) the hover state of its controller element.
 
 ### MenuItem
 * JavaScript file: `MenuItem.js`
@@ -104,5 +106,5 @@ __Event Listeners & Interaction Behavior__
 |              | `keydown` / `home` `page up`   | Set focus to first item            | yes |
 |              | `keydown` / `end` `page down`  | Set focus to last item             | yes |
 | Mouse        | `click`                        | Close menu; set focus to menu's controller element | no |
-| Focus        | 'focus'                        | Save focus state in menu object    | no |
-|              | 'blur'                         | Save focus state in menu object    | no |
+| Focus        | `focus`                        | Save focus state in menu object    | no |
+|              | `blur`                         | Save focus state in menu object    | no |
