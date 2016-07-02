@@ -72,8 +72,8 @@ var PopupMenu = function (menuNode, controllerObj) {
   this.controller = controllerObj;
 
   this.menuitems = [];      // see PopupMenu init method
-  this.firstItem = null;
-  this.lastItem  = null;
+  this.firstItem = null;    // see PopupMenu init method
+  this.lastItem  = null;    // see PopupMenu init method
 
   this.hasFocus  = false;   // see MenuItem handleFocus, handleBlur
   this.hasHover  = false;   // see PopupMenu handleMouseover, handleMouseout
