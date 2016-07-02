@@ -33,13 +33,15 @@
 *       its properties and event handlers.
 */
 var MenuButton = function (domNode) {
+  var msgPrefix = "MenuButton constructor argument domNode ";
 
   // Check whether domNode is a DOM element
   if (!domNode instanceof Element) {
-    throw new TypeError("MenuButton constructor argument 'domNode' is not a DOM Element.");
+    throw new TypeError(msgPrefix + "is not a DOM Element.");
   }
 
-  this.domNode = domNode;
+  this.domNode  = domNode;
+  this.hasHover = false;  // see MenuButton handleMouseover, handleMouseout
   this.menuNode = null;
 
   this.keyCode = Object.freeze({
