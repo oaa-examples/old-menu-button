@@ -37,7 +37,7 @@
 *       references this menu's menuNode. See MenuButton.js
 *
 *       The controller object is expected to have the following properties:
-*       1. domNode: The controller object's DOM element node, need for
+*       1. domNode: The controller object's DOM element node, needed for
 *          retrieving positioning information.
 *       2. hasHover: boolean that indicates whether the controller object's
 *          domNode has responded to a mouseover event with no subsequent
@@ -67,7 +67,6 @@ var PopupMenu = function (menuNode, controllerObj) {
         "has child elements that do not specify role=\"menuitem\".");
   }
 
-  menuNode.tabIndex = -1;
   this.menuNode = menuNode;
   this.controller = controllerObj;
 
@@ -88,21 +87,24 @@ var PopupMenu = function (menuNode, controllerObj) {
 *       array. Initialize firstItem and lastItem properties.
 */
 PopupMenu.prototype.init = function () {
-  var element, menuitem, numItems;
+  var menuItemAgent = new MenuItemAgent(this),
+      childElement, numItems;
 
+  // Configure the menuNode itself
+  this.menuNode.tabIndex = -1;
   this.menuNode.addEventListener('mouseover', this.handleMouseover.bind(this));
   this.menuNode.addEventListener('mouseout',  this.handleMouseout.bind(this));
 
-  // Configure element children of menuNode; populate menuitems array.
-  element = this.menuNode.firstElementChild;
+  // Traverse the element children of menuNode: configure each with
+  // menuitem role behavior and store reference in menuitems array.
+  childElement = this.menuNode.firstElementChild;
 
-  while (element) {
-    if (element.getAttribute('role')  === 'menuitem') {
-      menuitem = new MenuItem(element, this);
-      menuitem.init();
-      this.menuitems.push(element);
+  while (childElement) {
+    if (childElement.getAttribute('role')  === 'menuitem') {
+      menuItemAgent.configure(childElement);
+      this.menuitems.push(childElement);
     }
-    element = element.nextElementSibling;
+    childElement = childElement.nextElementSibling;
   }
 
   // Use populated menuitems array to initialize firstItem and lastItem.
