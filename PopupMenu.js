@@ -71,6 +71,7 @@ var PopupMenu = function (menuNode, controllerObj) {
   this.controller = controllerObj;
 
   this.menuitems = [];      // see PopupMenu init method
+  this.miLetters = [];      // see PopupMenu init method
   this.firstItem = null;    // see PopupMenu init method
   this.lastItem  = null;    // see PopupMenu init method
 
@@ -88,7 +89,7 @@ var PopupMenu = function (menuNode, controllerObj) {
 */
 PopupMenu.prototype.init = function () {
   var menuItemAgent = new MenuItemAgent(this),
-      childElement, numItems;
+      childElement, textContent, numItems;
 
   // Configure the menuNode itself
   this.menuNode.tabIndex = -1;
@@ -103,6 +104,8 @@ PopupMenu.prototype.init = function () {
     if (childElement.getAttribute('role')  === 'menuitem') {
       menuItemAgent.configure(childElement);
       this.menuitems.push(childElement);
+      textContent = childElement.textContent.trim();
+      this.miLetters.push(textContent.substring(0, 1).toLowerCase());
     }
     childElement = childElement.nextElementSibling;
   }
@@ -163,6 +166,35 @@ PopupMenu.prototype.setFocusToFirstItem = function () {
 PopupMenu.prototype.setFocusToLastItem = function () {
   this.lastItem.focus();
 };
+
+PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
+  var start, index;
+
+  // Get start index based on the position of the eventTarget
+  start = this.menuitems.indexOf(currentItem) + 1;
+  if (start === this.menuitems.length) {
+    start = 0;
+  }
+
+  // Check remaining slots in the menu
+  index = this.getIndexFromLetter(start, char);
+
+  // If not found in remaining slots, check from beginning
+  if (index === -1) {
+    index = this.getIndexFromLetter(0, char);
+  }
+
+  // Come on down...
+  if (index > -1) {
+    this.menuitems[index].focus();
+  }
+};
+
+PopupMenu.prototype.getIndexFromLetter = function (startIndex, letter) {
+  for (var i = startIndex; i < this.miLetters.length; i++)
+    if (letter === this.miLetters[i]) return i;
+  return -1;
+}
 
 /* MENU DISPLAY METHODS */
 
