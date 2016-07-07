@@ -65,9 +65,7 @@ MenuItemAgent.prototype.configure = function (element) {
 
   element.addEventListener('keydown',  this);
   element.addEventListener('keypress', this);
-
   element.addEventListener('click',    this);
-
   element.addEventListener('focus',    this);
   element.addEventListener('blur',     this);
 };
