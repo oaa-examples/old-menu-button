@@ -5,7 +5,7 @@ properties and states specified by the [WAI-ARIA Authoring Practices 1.1]
 (http://www.w3.org/TR/wai-aria-practices-1.1).
 
 ----------------------------------------------------------------
-## HTML Markup
+## HTML Markup / ARIA
 The HTML file for this example is `example.html`.
 
 ### button element
@@ -32,18 +32,19 @@ __ARIA role, properties and states__
 
 ### li elements
 * In this example, `li` elements are used to create custom menu items.
-* The delegate object for the `li` element is an instance of MenuItem, which is
-  instantiated and initialized by the PopupMenu object.
+* The event aggregator object for the menu item `li` elements is an instance of MenuItemAgent,
+  which is instantiated and initialized by the PopupMenu object.
 
 __ARIA role, properties and states__
 * Role: `menuitem`
 
 ----------------------------------------------------------------
-## Widget Descriptions
+## Scripting
 
 ### MenuButton
 * JavaScript file: `MenuButton.js`
-* Serves as the delegate for an HTML `button` element that acts as a menu button.
+* The MenuButton object serves as the delegate for an HTML `button` element that acts as a menu button.
+* It maintains a reference to its PopupMenu object.
 
 __Related objects__
 
@@ -63,16 +64,18 @@ __Event Listeners & Interaction Behavior__
 
 ### PopupMenu
 * JavaScript file: `PopupMenu.js`
-* Serves as the delegate for an HTML `ul` element that acts as a popup menu.
-* Each child `li` element of the `ul` is expected to have role `menuitem`.
-* The PopupMenu object saves a reference to each `li` `menuitem` element.
-* It also saves the state of the menu in its properties `hasFocus` and `hasHover`.
+* The PopupMenu object serves as the delegate for an HTML `ul` element that acts as a popup menu.
+* It checks that each child `li` element of the `ul` has role `menuitem`.
+* Utilizing an instance of MenuItemAgent, it configures each `li` `menuitem` element and then
+  saves a reference to each element in its `menuitems` array.
+* It saves the state of the menu in its properties `hasFocus` and `hasHover`.
 
 __Related objects__
 
-* MenuButton: The PopupMenu is initialized with a reference to its MenuButton controller object, which is the delegate for the `button` element that controls the menu.
-* MenuItem: The PopupMenu instantiates and initializes a MenuItem object for each `li` `menuitem` it contains,
-  which, in turn, adds the necessary event listeners to the `li`.
+* MenuButton: The PopupMenu is initialized with a reference to its MenuButton controller object, which is
+  the delegate for the `button` element that controls the menu.
+* MenuItemAgent: The PopupMenu instantiates and initializes a MenuItemAgent object, and then uses it to
+  configure each of its `menuitem` `li` elements.
 
 __Event Listeners & Interaction Behavior__
 
@@ -83,12 +86,12 @@ __Event Listeners & Interaction Behavior__
 
 Note:  Whether the PopupMenu's `mouseout` event handler closes the menu depends on (a) the focus state of its menuitem elements and (b) the hover state of its controller element.
 
-### MenuItem
-* JavaScript file: `MenuItem.js`
-* The MenuItem object serves as the delegate for an HTML `li` element that acts as a menu item.
+### MenuItemAgent
+* JavaScript file: `MenuItemAgent.js`
+* The MenuItemAgent object serves as an event aggregator for all of the HTML `li` elements that act as menu items.
 * It implements `menuitem` behavior by adding the necessary event listeners to an `li` element.
-* Most of the keyboard event handling in this example is done by the MenuItem object.
-* In response to those events, the MenuItem object calls the methods of its related PopuMenu object.
+* Most of the keyboard event handling in this example is done by the MenuItemAgent object.
+* In response to those events, the MenuItemAgent object calls the methods of its related PopuMenu object.
 
 __Related objects__
 
@@ -105,6 +108,7 @@ __Event Listeners & Interaction Behavior__
 |              | `keydown` / `down arrow`       | Set focus to next item (wraps)     | yes |
 |              | `keydown` / `home` `page up`   | Set focus to first item            | yes |
 |              | `keydown` / `end` `page down`  | Set focus to last item             | yes |
+|              | `keypress` /  `letter key`     | Set focus to item with matching first letter | no |
 | Mouse        | `click`                        | Close menu; set focus to menu's controller element | no |
 | Focus        | `focus`                        | Save focus state in menu object    | no |
 |              | `blur`                         | Save focus state in menu object    | no |
