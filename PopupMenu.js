@@ -135,6 +135,14 @@ PopupMenu.prototype.setFocusToController = function () {
   this.controller.domNode.focus();
 };
 
+PopupMenu.prototype.setFocusToFirstItem = function () {
+  this.firstItem.focus();
+};
+
+PopupMenu.prototype.setFocusToLastItem = function () {
+  this.lastItem.focus();
+};
+
 PopupMenu.prototype.setFocusToPreviousItem = function (currentItem) {
   var index;
 
@@ -159,14 +167,6 @@ PopupMenu.prototype.setFocusToNextItem = function (currentItem) {
   }
 };
 
-PopupMenu.prototype.setFocusToFirstItem = function () {
-  this.firstItem.focus();
-};
-
-PopupMenu.prototype.setFocusToLastItem = function () {
-  this.lastItem.focus();
-};
-
 PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
   var start, index;
 
@@ -184,7 +184,7 @@ PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
     index = this.getIndexFromLetter(0, char);
   }
 
-  // Come on down...
+  // First letter match was found
   if (index > -1) {
     this.menuitems[index].focus();
   }
