@@ -63,10 +63,13 @@ var MenuItemAgent = function (menuObj) {
 MenuItemAgent.prototype.configure = function (element) {
   element.tabIndex = -1;
 
-  element.addEventListener('keydown', this);
-  element.addEventListener('click',   this);
-  element.addEventListener('focus',   this);
-  element.addEventListener('blur',    this);
+  element.addEventListener('keydown',  this);
+  element.addEventListener('keypress', this);
+
+  element.addEventListener('click',    this);
+
+  element.addEventListener('focus',    this);
+  element.addEventListener('blur',     this);
 };
 
 /* EVENT HANDLERS */
@@ -75,6 +78,9 @@ MenuItemAgent.prototype.handleEvent = function (event) {
   switch (event.type) {
     case 'keydown':
       this.handleKeydown(event);
+      break;
+    case 'keypress':
+      this.handleKeypress(event);
       break;
     case 'click':
       this.handleClick(event);
@@ -157,6 +163,19 @@ MenuItemAgent.prototype.handleKeydown = function (event) {
   if (flag) {
     event.stopPropagation();
     event.preventDefault();
+  }
+};
+
+MenuItemAgent.prototype.handleKeypress = function (event) {
+  var tgt = event.currentTarget,
+      char = String.fromCharCode(event.charCode);
+
+  function isLetter (str) {
+    return str.length === 1 && str.match(/[a-z]/i);
+  }
+
+  if (isLetter(char)) {
+    this.menu.setFocusByFirstLetter(tgt, char.toLowerCase());
   }
 };
 
