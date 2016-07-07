@@ -184,17 +184,18 @@ PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
     index = this.getIndexFromLetter(0, char);
   }
 
-  // First letter match was found
+  // If match was found...
   if (index > -1) {
     this.menuitems[index].focus();
   }
 };
 
 PopupMenu.prototype.getIndexFromLetter = function (startIndex, letter) {
-  for (var i = startIndex; i < this.miLetters.length; i++)
+  for (var i = startIndex; i < this.miLetters.length; i++) {
     if (letter === this.miLetters[i]) return i;
+  }
   return -1;
-}
+};
 
 /* MENU DISPLAY METHODS */
 
