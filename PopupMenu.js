@@ -70,13 +70,14 @@ var PopupMenu = function (menuNode, controllerObj) {
   this.menuNode = menuNode;
   this.controller = controllerObj;
 
-  this.menuitems = [];      // see PopupMenu init method
-  this.miLetters = [];      // see PopupMenu init method
-  this.firstItem = null;    // see PopupMenu init method
-  this.lastItem  = null;    // see PopupMenu init method
+  this.menuitems  = [];      // see PopupMenu init method
+  this.firstChars = [];      // see PopupMenu init method
 
-  this.hasFocus  = false;   // see MenuItem handleFocus, handleBlur
-  this.hasHover  = false;   // see PopupMenu handleMouseover, handleMouseout
+  this.firstItem  = null;    // see PopupMenu init method
+  this.lastItem   = null;    // see PopupMenu init method
+
+  this.hasFocus   = false;   // see MenuItem handleFocus, handleBlur
+  this.hasHover   = false;   // see PopupMenu handleMouseover, handleMouseout
 };
 
 /*
@@ -105,7 +106,7 @@ PopupMenu.prototype.init = function () {
       menuItemAgent.configure(childElement);
       this.menuitems.push(childElement);
       textContent = childElement.textContent.trim();
-      this.miLetters.push(textContent.substring(0, 1).toLowerCase());
+      this.firstChars.push(textContent.substring(0, 1).toLowerCase());
     }
     childElement = childElement.nextElementSibling;
   }
@@ -167,21 +168,21 @@ PopupMenu.prototype.setFocusToNextItem = function (currentItem) {
   }
 };
 
-PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
-  var start, index;
+PopupMenu.prototype.setFocusByFirstCharacter = function (currentItem, char) {
+  var start, index, char = char.toLowerCase();
 
-  // Get start index for search based on the position of currentItem
+  // Get start index for search based on position of currentItem
   start = this.menuitems.indexOf(currentItem) + 1;
   if (start === this.menuitems.length) {
     start = 0;
   }
 
   // Check remaining slots in the menu
-  index = this.getIndexFromLetter(start, char);
+  index = this.getIndexFirstChars(start, char);
 
   // If not found in remaining slots, check from beginning
   if (index === -1) {
-    index = this.getIndexFromLetter(0, char);
+    index = this.getIndexFirstChars(0, char);
   }
 
   // If match was found...
@@ -190,9 +191,9 @@ PopupMenu.prototype.setFocusByFirstLetter = function (currentItem, char) {
   }
 };
 
-PopupMenu.prototype.getIndexFromLetter = function (startIndex, letter) {
-  for (var i = startIndex; i < this.miLetters.length; i++) {
-    if (letter === this.miLetters[i]) return i;
+PopupMenu.prototype.getIndexFirstChars = function (startIndex, char) {
+  for (var i = startIndex; i < this.firstChars.length; i++) {
+    if (char === this.firstChars[i]) return i;
   }
   return -1;
 };
