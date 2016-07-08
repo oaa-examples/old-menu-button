@@ -168,12 +168,12 @@ MenuItemAgent.prototype.handleKeypress = function (event) {
   var tgt = event.currentTarget,
       char = String.fromCharCode(event.charCode);
 
-  function isLetter (str) {
-    return str.length === 1 && str.match(/[a-z]/i);
+  function isPrintableCharacter (str) {
+    return str.length === 1 && str.match(/\S/);
   }
 
-  if (isLetter(char)) {
-    this.menu.setFocusByFirstLetter(tgt, char.toLowerCase());
+  if (isPrintableCharacter(char)) {
+    this.menu.setFocusByFirstCharacter(tgt, char);
   }
 };
 
